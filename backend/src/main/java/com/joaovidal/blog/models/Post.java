@@ -1,4 +1,4 @@
-package com.joaovidal.blog.Models;
+package com.joaovidal.blog.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

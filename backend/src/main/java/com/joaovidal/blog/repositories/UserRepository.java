@@ -1,6 +1,6 @@
-package com.joaovidal.blog.Repositories;
+package com.joaovidal.blog.repositories;
 
-import com.joaovidal.blog.Models.User;
+import com.joaovidal.blog.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
