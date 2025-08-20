@@ -1,4 +1,4 @@
-package com.joaovidal.blog.auth.services;
+package com.joaovidal.blog.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
