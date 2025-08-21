@@ -1,6 +1,7 @@
 package com.joaovidal.blog.services;
 
 import com.joaovidal.blog.models.User;
+import com.joaovidal.blog.models.dtos.UserInfoResponse;
 import com.joaovidal.blog.repositories.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,12 +19,29 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public List<User> allUsers() {
-        List<User> users = new ArrayList<>();
+    public List<UserInfoResponse> allUsers() {
+        return userRepository.findAll().stream()
+                .map(u -> new UserInfoResponse(u.getEmail(), u.getRoles().stream().toList())).toList();
+    }
 
-         userRepository.findAll().forEach(users::add);
+    public UserInfoResponse retrieveUserInfo(String email) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        return new UserInfoResponse(user.getEmail(), user.getRoles().stream().toList());
+    }
 
-        return users;
+    public UserInfoResponse promote(String email) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        if (user.getRoles().stream().anyMatch(r -> r.equals("ADMIN"))) {
+            return new UserInfoResponse(user.getEmail(), user.getRoles().stream().toList());
+        }
+
+        user.getRoles().add("ADMIN");
+
+        userRepository.save(user);
+        return new UserInfoResponse(user.getEmail(), user.getRoles().stream().toList());
     }
 
     @Override
