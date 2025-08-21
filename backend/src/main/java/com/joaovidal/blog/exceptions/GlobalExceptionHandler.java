@@ -2,6 +2,8 @@ package com.joaovidal.blog.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.ServletException;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,6 +27,11 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "The account is locked");
         }
 
+        if (exception instanceof ServletException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
+            errorDetail.setProperty("description", "The account is locked");
+        }
+
         if (exception instanceof AccessDeniedException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "You are not authorized to access this resource");
@@ -36,6 +43,11 @@ public class GlobalExceptionHandler {
         }
 
         if (exception instanceof ExpiredJwtException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
+            errorDetail.setProperty("description", "The JWT token has expired");
+        }
+
+        if (exception instanceof BeanCreationException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "The JWT token has expired");
         }
