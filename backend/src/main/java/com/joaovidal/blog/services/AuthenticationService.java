@@ -1,8 +1,8 @@
 package com.joaovidal.blog.services;
 
 import com.joaovidal.blog.models.User;
-import com.joaovidal.blog.models.dtos.LoginUserDto;
-import com.joaovidal.blog.models.dtos.RegisterUserDto;
+import com.joaovidal.blog.models.dtos.LoginRequest;
+import com.joaovidal.blog.models.dtos.RegisterRequest;
 import com.joaovidal.blog.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +27,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public User signup(RegisterUserDto input) {
+    public User signup(RegisterRequest input) {
         User user = User.builder()
                 .firstName(input.firstName())
                 .lastName(input.lastName())
@@ -38,7 +38,7 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public UserDetails authenticate(LoginUserDto input) {
+    public UserDetails authenticate(LoginRequest input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.email(),

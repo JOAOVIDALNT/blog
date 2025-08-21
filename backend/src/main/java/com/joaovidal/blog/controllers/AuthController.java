@@ -3,8 +3,8 @@ package com.joaovidal.blog.controllers;
 import com.joaovidal.blog.configs.auth.JwtUtil;
 import com.joaovidal.blog.models.User;
 import com.joaovidal.blog.models.dtos.LoginResponse;
-import com.joaovidal.blog.models.dtos.LoginUserDto;
-import com.joaovidal.blog.models.dtos.RegisterUserDto;
+import com.joaovidal.blog.models.dtos.LoginRequest;
+import com.joaovidal.blog.models.dtos.RegisterRequest;
 import com.joaovidal.blog.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,13 +25,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto request) {
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
         User created = authService.signup(request);
         return ResponseEntity.ok(created);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         UserDetails user = authService.authenticate(request);
         String token = jwtUtil.generateToken(user);
         return ResponseEntity.ok(new LoginResponse(token));
