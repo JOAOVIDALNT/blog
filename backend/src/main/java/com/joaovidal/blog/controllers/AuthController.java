@@ -5,9 +5,8 @@ import com.joaovidal.blog.models.User;
 import com.joaovidal.blog.models.dtos.LoginResponse;
 import com.joaovidal.blog.models.dtos.LoginRequest;
 import com.joaovidal.blog.models.dtos.RegisterRequest;
-import com.joaovidal.blog.services.AuthenticationService;
+import com.joaovidal.blog.services.AuthService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final JwtUtil jwtUtil;
-    private final AuthenticationService authService;
+    private final AuthService authService;
 
-    public AuthController(JwtUtil jwtUtil, AuthenticationService authService) {
+    public AuthController(JwtUtil jwtUtil, AuthService authService) {
         this.jwtUtil = jwtUtil;
         this.authService = authService;
     }
