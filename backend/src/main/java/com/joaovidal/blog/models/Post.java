@@ -5,38 +5,37 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
-@Table(name = "post")
+@Document(collection = "posts")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class Post {
+public class Post implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
     private UUID id;
     @NotBlank
-    @Column(nullable = false)
+    @Indexed
     private String title;
     @NotBlank
-    @Column(nullable = false)
     private String content;
     @NotBlank
-    @Column(nullable = false)
-    private String slug;
-    @NotBlank
-    @Column(nullable = false)
     private UUID authorId;
-    @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
+    @CreatedDate
     private Date createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+    @LastModifiedDate
     private Date updatedAt;
 }

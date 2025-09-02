@@ -32,7 +32,6 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<List<UserInfoResponse>> allUsers() {
         var users = userService.allUsers();
-
         return ResponseEntity.ok(users);
     }
 
